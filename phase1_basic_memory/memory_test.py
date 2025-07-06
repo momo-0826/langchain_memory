@@ -29,7 +29,6 @@ prompt = ChatPromptTemplate.from_messages(
 )
 
 # # LCELでチェーンを組む
-# chain = prompt | llm
 # RunnablePassthrough.assignを使って入力がdict型となることを保証する
 # llmの後にStrOutputParserを使用することで出力を扱いやすい文字列に変換する
 runnable = (
