@@ -1,10 +1,12 @@
 ### ロードマップ：記憶するチャットボットの構築（拡張版）
 
-**フェーズ1：記憶の基本を理解する（ConversationBufferMemory）**
-*   **目的**: LangChainの最も基本的なメモリ機能と、StreamlitでのUI構築の基礎を習得する。
+**フェーズ1：記憶の基本を理解する（旧式と最新式の比較）**
+*   **目的**: LangChainにおける記憶機能の基本的な考え方を、旧式の`ConversationChain`と最新式の`RunnableWithMessageHistory`を比較しながら深く理解する。また、StreamlitでのUI構築の基礎を習得する。
     *   LangChainと必要なライブラリのインストール
     *   OpenAI APIキーの設定
-    *   `ConversationBufferMemory`の初期化と動作確認（Pythonスクリプト）
+    *   **最新式メモリの実装**: `RunnableWithMessageHistory`と`ChatMessageHistory`を使い、LCELに基づいた記憶の仕組みを実装・理解する。
+    *   **旧式メモリの実装**: `ConversationChain`と`ConversationBufferMemory`を使い、伝統的な記憶の仕組みを実装・理解する。
+    *   **新旧比較**: 両者の設計思想（モジュール式 vs 一体型）の違いと、それがもたらす柔軟性・透明性の差を学ぶ。
     *   Streamlitアプリケーションの基本構造作成
     *   LangChainとStreamlitの統合
     *   チャット履歴の表示機能の実装
