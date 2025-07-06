@@ -1,24 +1,26 @@
 ### ロードマップ：記憶するチャットボットの構築（拡張版）
 
-**フェーズ1：記憶の基本を理解する（ConversationBufferMemory）**
-*   **目的**: LangChainの最も基本的なメモリ機能と、StreamlitでのUI構築の基礎を習得する。
+**フェーズ1：記憶の基本を理解する（旧式と最新式の比較）**
+*   **目的**: LangChainにおける記憶機能の基本的な考え方を、旧式の`ConversationChain`と最新式の`RunnableWithMessageHistory`を比較しながら深く理解する。また、StreamlitでのUI構築の基礎を習得する。
     *   LangChainと必要なライブラリのインストール
     *   OpenAI APIキーの設定
-    *   `ConversationBufferMemory`の初期化と動作確認（Pythonスクリプト）
+    *   **最新式メモリの実装**: `RunnableWithMessageHistory`と`ChatMessageHistory`を使い、LCELに基づいた記憶の仕組みを実装・理解する。
+    *   **旧式メモリの実装**: `ConversationChain`と`ConversationBufferMemory`を使い、伝統的な記憶の仕組みを実装・理解する。
+    *   **新旧比較**: 両者の設計思想（モジュール式 vs 一体型）の違いと、それがもたらす柔軟性・透明性の差を学ぶ。
     *   Streamlitアプリケーションの基本構造作成
     *   LangChainとStreamlitの統合
     *   チャット履歴の表示機能の実装
     *   ユーザー入力とボット応答の処理
 
-**フェーズ2：より高度なメモリ機能の探求**
-*   **目的**: `ConversationBufferMemory`以外の、より特化したメモリ機能の概念と実装を学ぶ。
-    *   **`EntityMemory`の導入**:
-        *   対話の中から特定のエンティティ（人、場所、物など）を抽出し、記憶する方法を学ぶ。
-        *   Streamlitアプリケーションに組み込み、エンティティベースの記憶がどのように機能するかを体験する。
-    *   **`VectorStoreRetrieverMemory`の導入**:
-        *   外部ドキュメント（例: PDF、テキストファイル）をベクトルストアに格納し、それをメモリとして利用する方法を学ぶ。
-        *   RAG（Retrieval-Augmented Generation）の概念と、それがメモリとしてどのように機能するかを理解する。
-        *   Streamlitアプリケーションに組み込み、外部知識に基づいた応答を生成させる。
+**フェーズ2：より高度なメモリ機能の探求（旧式と最新式の比較）**
+*   **目的**: 会話の文脈をより深く理解し、外部知識を活用するための、より高度なメモリ機能の概念と実装を、旧式と最新式を比較しながら学ぶ。
+    *   **エンティティ記憶の探求**:
+        *   **最新式**: `ConversationKGMemory`を導入し、会話からエンティティとその関係性をナレッジグラフとして記憶する方法を実装・理解する。
+        *   **旧式**: `EntityMemory`を実装し、その動作と`ConversationKGMemory`との違いを比較する。
+    *   **外部知識活用メモリの探求**:
+        *   **最新式**: `VectorStore`と`Retriever`を組み合わせた記憶を導入し、外部ドキュメントをベクトルストアに格納し、関連情報を取得してメモリとして利用する方法を実装・理解する。
+        *   **旧式**: `VectorStoreRetrieverMemory`を実装し、その動作と最新式との違いを比較する。
+    *   Streamlitアプリケーションへの統合（各メモリ機能の動作確認）
 
 **フェーズ3：LangGraphによるエージェントの記憶管理**
 *   **目的**: LangChain 0.3以降で推奨されるLangGraphの強力なメモリ管理機能と、複雑なエージェントの構築方法を学ぶ。
