@@ -100,13 +100,17 @@ with_message_history = RunnableWithMessageHistory( # (F)
 *   `(D) store = {}`: 会話履歴を保存しておくための、ただの空っぽの辞書だ。現実のアプリではデータベースなどになる。
 *   `(E) get_session_history(...)`: `session_id`（会話のID）を受け取って、`store`の中から対応する会話履歴を取り出す関数だ。もし履歴がなければ、新しく空の履歴を作って返す。
 *   `(F) RunnableWithMessageHistory(...)`: こいつが**記憶の魔術師**だ。
-    *   こいつは、`runnable`（さっき作った会話処理マシン）を内側にラップする。
-    *   そして、`invoke`が呼ばれるたびに、以下の魔法を自動でやってくれる。
+    *   こいつは、`runnable`（さっき作った会話処理マシン）を内側にラップし、記憶機能を授ける。
+    *   `input_messages_key="input"`: これは「**ユーザーからの新しいメッセージを特定するための荷札**」だ。`invoke`メソッドに渡される辞書データ `{"input": "..."}` の中で、「`input`というキーに格納されているのが新しいメッセージだ」と教えている。
+        *   **（重要）** もし君が`invoke`に渡す辞書を `{"question": user_input}` のように変更したなら、`input_messages_key`も`"question"`に合わせる必要がある。キーの名前は開発者が自由に決められるが、`invoke`で渡すキーと`RunnableWithMessageHistory`で指定するキーは、必ず一致させなければならない。
+    *   `history_messages_key="history"`: これは「**過去の会話履歴を格納するための荷札**」だ。この後、内部で取得した会話履歴が `{"history": [....]}` という形でデータに追加される。このキー名は、プロンプトテンプレートの `MessagesPlaceholder(variable_name="history")` と一致させる必要がある。
+    *   `invoke`が呼ばれるたびに、こいつは以下の魔法を自動でやってくれる。
         1.  `config`から`session_id`を受け取る。
         2.  `get_session_history`を呼び出し、そのIDに対応する**過去の履歴**を取り出す。
-        3.  取り出した履歴を、`history_messages_key`で指定された `'history'` というキーで、`runnable`に渡すデータに**自動で追加**する。
-        4.  `runnable`を実行させる。
-        5.  `runnable`が処理を終えた後、今回の「ユーザーの入力」と「AIの応答」を、再び`get_session_history`を使って`store`に**保存**する。
+        3.  `runnable`に渡すデータを作成する。まず `invoke` から受け取った `{"input": "..."}` がある。
+        4.  そこへ、先ほど取り出した過去の履歴を `history_messages_key` で指定された `'history'` というキーで**自動で追加**する。結果、データは `{'input': '...', 'history': [...]}` のような形になる。
+        5.  この完成したデータを `runnable` に渡して実行させる。
+        6.  `runnable`が処理を終えた後、今回の「ユーザーの入力（`input_messages_key`で指定された値）」と「AIの応答」を、再び`get_session_history`を使って`store`に**保存**する。
 
 ---
 
